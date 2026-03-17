@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.9-slim'
-        }
-    }
+    agent any
     stages {
         stage('Clone') {
             steps {
@@ -12,8 +8,8 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'pip install flask pytest'
-                sh 'pytest test_app.py'
+                sh 'python3 -m pip install flask pytest'
+                sh 'python3 -m pytest test_app.py'
             }
         }
         stage('Build Image') {

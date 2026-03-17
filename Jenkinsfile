@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.9-slim'
+        }
+    }
     stages {
         stage('Clone') {
             steps {
@@ -15,7 +19,7 @@ pipeline {
         stage('Build Image') {
             steps {
                 script {
-                    def dockerImage = "anisasaguer/python-app:latest"
+                    def dockerImage = "anisasaguerallouseso/python-app:latest"
                     sh "docker build -t ${dockerImage} ."
                 }
             }
@@ -23,7 +27,7 @@ pipeline {
         stage('DockerHub') {
             steps {
                 script {
-                    def dockerImage = "anisasaguer/python-app:latest"
+                    def dockerImage = "anisasaguerallouseso/python-app:latest"
                     sh "docker push ${dockerImage}"
                 }
             }

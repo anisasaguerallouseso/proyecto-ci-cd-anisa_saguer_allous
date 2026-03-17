@@ -10,8 +10,15 @@ pipeline {
         
         stage('Test') {
             steps {
-                sh 'python3 -m pip install --break-system-packages flask pytest'
-                sh 'python3 -m pytest test_app.py'
+                script {
+                    sh '''
+                        docker run --rm \
+                            -v $(pwd):/app \
+                            -w /app \
+                            python:3.9-slim \
+                            bash -c "pip install flask pytest && pytest test_app.py"
+                    '''
+                }
             }
         }
         

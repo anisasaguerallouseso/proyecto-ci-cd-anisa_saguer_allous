@@ -8,8 +8,15 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'python3 -m pip install flask pytest'
-                sh 'python3 -m pytest test_app.py'
+                script {
+                    // Ejecutar tests dentro de un contenedor Docker con Python
+                    sh '''
+                        docker run --rm -v $(pwd):/app -w /app python:3.9-slim bash -c "
+                            pip install flask pytest
+                            pytest test_app.py
+                        "
+                    '''
+                }
             }
         }
         stage('Build Image') {

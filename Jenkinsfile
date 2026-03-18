@@ -10,15 +10,10 @@ pipeline {
         
         stage('Test') {
             steps {
-                script {
-                    sh '''
-                        docker run --rm \
-                            -v $(pwd):/app \
-                            -w /app \
-                            python:3.9-slim \
-                            sh -c "pip install flask pytest && pytest test_app.py"
-                    '''
-                }
+                sh '''
+                    docker run --rm -v ${WORKSPACE}:/app -w /app python:3.9-slim python -m pip install flask pytest
+                    docker run --rm -v ${WORKSPACE}:/app -w /app python:3.9-slim python -m pytest test_app.py
+                '''
             }
         }
         

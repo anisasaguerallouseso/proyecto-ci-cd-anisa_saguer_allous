@@ -29,8 +29,16 @@ pipeline {
         
         stage('Deploy') {
             steps {
-                sh 'kubectl apply -f deployment.yaml'
-                sh 'kubectl apply -f service.yaml'
+        sh '''
+            kubectl --server=https://192.168.49.2:8443 \
+                    --insecure-skip-tls-verify=true \
+                    --kubeconfig=/dev/null \
+                    apply -f deployment.yaml
+            kubectl --server=https://192.168.49.2:8443 \
+                    --insecure-skip-tls-verify=true \
+                    --kubeconfig=/dev/null \
+                    apply -f service.yaml
+        '''
             }
         }
     }

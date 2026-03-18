@@ -29,17 +29,18 @@ pipeline {
         
         stage('Deploy') {
             steps {
-        sh '''
-            kubectl --server=https://192.168.49.2:8443 \
-                    --insecure-skip-tls-verify=true \
-                    --kubeconfig=/dev/null \
-                    apply -f deployment.yaml
-            kubectl --server=https://192.168.49.2:8443 \
-                    --insecure-skip-tls-verify=true \
-                    --kubeconfig=/dev/null \
-                    apply -f service.yaml
-        '''
+                echo 'Despliegue manual: ejecutar kubectl desde la terminal'
+                sh 'cp deployment.yaml /tmp/deployment.yaml'
+                sh 'cp service.yaml /tmp/service.yaml'
             }
+        }
+    }
+    
+    post {
+        success {
+            echo 'Pipeline completado. Para desplegar, ejecuta:'
+            echo 'kubectl apply -f /tmp/deployment.yaml'
+            echo 'kubectl apply -f /tmp/service.yaml'
         }
     }
 }

@@ -4,14 +4,14 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                echo 'Proyecto clonado correctamente desde GitHub'
+                echo 'Proyecto clonado correctamente'
             }
         }
         
         stage('Test') {
             steps {
-                sh 'docker run --rm -v ${WORKSPACE}:/app -w /app python:3.9-slim pip install flask pytest'
-                sh 'docker run --rm -v ${WORKSPACE}:/app -w /app python:3.9-slim pytest test_app.py'
+                sh 'pip3 install --break-system-packages flask pytest'
+                sh 'python3 -m pytest test_app.py'
             }
         }
         
